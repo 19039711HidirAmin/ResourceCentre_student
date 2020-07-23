@@ -64,7 +64,7 @@ public class ResourceCentreTest {
 				
 				//Add another item. test The size of the list is 2?
 				ResourceCentre.addChromebook(chromebookList, cb2);
-				assertEquals("Test that Chromebook arraylist size is 2?", 2, chromebookList.size());
+				assertEquals("Test that Camcorder arraylist size is 2?", 2, chromebookList.size());
 	}
 	
 	@Test
@@ -72,7 +72,7 @@ public class ResourceCentreTest {
 		// Test if Item list is not null but empty, so that can add a new item
 		assertNotNull("Test if there is valid Camcorder arraylist to add to", camcorderList);
 		
-		//test if the list of camcorders retrieved from the SourceCentre is empty
+		//test if the list of Camcoder retrieved from the SourceCentre is empty
 				String allCamcorder= ResourceCentre.retrieveAllCamcorder(camcorderList);
 				String testOutput = "";
 				assertEquals("Check that ViewAllCamcorderlist", testOutput, allCamcorder);
@@ -82,7 +82,7 @@ public class ResourceCentreTest {
 		ResourceCentre.addCamcorder(camcorderList, cc2);
 		assertEquals("Test if that Camcorder arraylist size is 2?", 2, camcorderList.size());
 		
-		//test if the expected output string same as the list of camcorders retrieved from the SourceCentre
+		//test if the expected output string same as the list of Camcoder retrieved from the SourceCentre
 		allCamcorder= ResourceCentre.retrieveAllCamcorder(camcorderList);
 
 		testOutput = String.format("%-10s %-30s %-10s %-10s %-20d\n","CC0011", "Nikon HDSLR", "Yes", "", 40);
@@ -95,13 +95,48 @@ public class ResourceCentreTest {
 	public void retrieveAllChromebookTest() {
 		//fail("Not yet implemented");
 		// write your code here
+		// Test if Item list is not null but empty, so that can add a new item
+				assertNotNull("Test if there is valid Chromebook arraylist to add to", chromebookList);
+				
+				//test if the list of Chromebook retrieved from the SourceCentre is empty
+						String allChromebook= ResourceCentre.retrieveAllChromebook(chromebookList);
+						String testOutput = "";
+						assertEquals("Check that ViewAllChromebooklist", testOutput, allChromebook);
+						
+				//Given an empty list, after adding 2 items, test if the size of the list is 2
+				ResourceCentre.addChromebook(chromebookList, cb1);
+				ResourceCentre.addChromebook(chromebookList, cb2);
+				assertEquals("Test if that Chromebook arraylist size is 2?", 2, chromebookList.size());
+				
+				//test if the expected output string same as the list of Chromebook retrieved from the SourceCentre
+				allChromebook= ResourceCentre.retrieveAllCamcorder(camcorderList);
+
+				testOutput = String.format("%-10s %-30s %-10s %-10s %-20d\n","CC0011", "Nikon HDSLR", "Yes", "", 40);
+				testOutput += String.format("%-10s %-30s %-10s %-10s %-20d\n","CC0012", "Sony DSC-RX100M7", "Yes", "", 20);
+			
+				assertEquals("Check that ViewAllChromebooklist", testOutput, allChromebook);
 	}
 
 	@Test
 	public void doLoanCamcorderTest() {
 		//fail("Not yet implemented");
-		// write your code here
-		
+		// write your code here	
+			//test if the list of Camcoder retrieved from the SourceCentre is not empty
+			String allCamcorder= ResourceCentre.retrieveAllCamcorder(camcorderList);
+			assertNotNull("Test if there is valid Camcorder arraylist to add to", allCamcorder);
+			
+			//test if the availability of the Camcorder is false when camcorder is loaned
+			String tag = Helper.readString("Enter asset tag > ");
+			String dueDate = Helper.readString("Enter due date > ");
+			for (int i = 0; i < camcorderList.size(); i++) {
+				if (tag.equalsIgnoreCase(camcorderList.get(i).getAssetTag())
+						&& camcorderList.get(i).getIsAvailable() == true) {
+					
+					camcorderList.get(i).setIsAvailable(false);
+					camcorderList.get(i).setDueDate(dueDate);				
+				}
+			}
+			assertSame("Test that Camcorder is unavailable after loan?", false, camcorderList.get(0).getIsAvailable());
 	}
 	
 	@Test
@@ -114,7 +149,25 @@ public class ResourceCentreTest {
 	public void doReturnCamcorderTest() {
 		//fail("Not yet implemented");
 		// write your code here
+		//test if the list of Camcoder retrieved from the SourceCentre is not empty
+		String allCamcorder= ResourceCentre.retrieveAllCamcorder(camcorderList);
+		assertNotNull("Test if there is valid Camcorder arraylist to add to", allCamcorder);
 		
+		// Test if the availability of camcorder is true when camcorder is returned
+		String tag = Helper.readString("Enter asset tag > ");
+		
+		for (int i = 0; i < camcorderList.size(); i++) {
+			if (tag.equalsIgnoreCase(camcorderList.get(i).getAssetTag())
+					&& camcorderList.get(i).getIsAvailable() == false) {
+				camcorderList.get(i).setIsAvailable(true);
+				camcorderList.get(i).setDueDate("");
+			}
+		}
+		assertSame("Test that Camcorder is available after camcorder is returned?", true, camcorderList.get(0).getIsAvailable());
+		
+		// Test if the due date is empty after camcorder is returned
+		String empty = "";
+		assertSame("Test that due date is empty after returned?", empty, camcorderList.get(0).getDueDate());
 	}
 	@Test
 	public void doReturnChromebookTest() {
