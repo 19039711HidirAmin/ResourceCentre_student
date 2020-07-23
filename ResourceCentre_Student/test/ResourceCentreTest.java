@@ -142,7 +142,23 @@ public class ResourceCentreTest {
 	@Test
 	public void doLoanChromebookTest() {
 		//fail("Not yet implemented");
-		// write your code here
+		// write your code here	
+			//test if the list of Chromebook retrieved from the SourceCentre is not empty
+			String allChromebook= ResourceCentre.retrieveAllChromebook(chromebookList);
+			assertNotNull("Test if there is valid Camcorder arraylist to add to", allChromebook);
+			
+			//test if the availability of the Chromebook is false when Chromebook is loaned
+			String tag = Helper.readString("Enter asset tag > ");
+			String dueDate = Helper.readString("Enter due date > ");
+			for (int i = 0; i < chromebookList.size(); i++) {
+				if (tag.equalsIgnoreCase(chromebookList.get(i).getAssetTag())
+						&& chromebookList.get(i).getIsAvailable() == true) {
+					
+					chromebookList.get(i).setIsAvailable(false);
+					chromebookList.get(i).setDueDate(dueDate);				
+				}
+			}
+			assertSame("Test that Chromebook is unavailable after loan?", false, chromebookList.get(0).getIsAvailable());
 	}
 	
 	@Test
@@ -173,6 +189,25 @@ public class ResourceCentreTest {
 	public void doReturnChromebookTest() {
 		//fail("Not yet implemented");
 		// write your code here
+		//test if the list of Chromebook retrieved from the SourceCentre is not empty
+		String allChromebook= ResourceCentre.retrieveAllChromebook(chromebookList);
+		assertNotNull("Test if there is valid Chromebook arraylist to add to", allChromebook);
+		
+		// Test if the availability of chromebook is true when chromebook is returned
+		String tag = Helper.readString("Enter asset tag > ");
+		
+		for (int i = 0; i < chromebookList.size(); i++) {
+			if (tag.equalsIgnoreCase(chromebookList.get(i).getAssetTag())
+					&& chromebookList.get(i).getIsAvailable() == false) {
+				chromebookList.get(i).setIsAvailable(true);
+				chromebookList.get(i).setDueDate("");
+			}
+		}
+		assertSame("Test that Chromebook is available after camcorder is returned?", true, chromebookList.get(0).getIsAvailable());
+		
+		// Test if the due date is empty after chromebook is returned
+		String empty = "";
+		assertSame("Test that due date is empty after returned?", empty, chromebookList.get(0).getDueDate());
 	}
 	
 	@After
