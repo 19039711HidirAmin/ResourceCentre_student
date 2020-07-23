@@ -203,7 +203,7 @@ public class ResourceCentreTest {
 				chromebookList.get(i).setDueDate("");
 			}
 		}
-		assertSame("Test that Chromebook is available after camcorder is returned?", true, chromebookList.get(0).getIsAvailable());
+		assertSame("Test that Chromebook is available after chromebook is returned?", true, chromebookList.get(0).getIsAvailable());
 		
 		// Test if the due date is empty after chromebook is returned
 		String empty = "";
